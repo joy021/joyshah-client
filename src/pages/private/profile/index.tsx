@@ -120,7 +120,7 @@ function ProfilePage() {
 
   const validate = () => {
     const { name, email, newPassword } = formData;
-
+  
     // Name Validation
     if (!name.trim()) {
       message.error("Name is required!");
@@ -134,17 +134,28 @@ function ProfilePage() {
       message.error("Name can only contain letters and spaces!");
       return false;
     }
-
+  
     // Email Validation
     if (!email.trim()) {
-      message.error("Email is required!");
+      message.error("Please enter your email!");
       return false;
     }
-    if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/.test(email)) {
-      message.error("Invalid email format!");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      message.error("Enter a valid email address!");
       return false;
     }
-
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$/;
+    if (!emailPattern.test(email)) {
+      message.error("Enter a valid email address format!");
+      return false;
+    }
+    const allowedDomains = ["gmail.com", "yahoo.com", "outlook.com"];
+    const domain = email.split("@")[1];
+    if (!allowedDomains.includes(domain)) {
+      message.error("Only Gmail, Yahoo, and Outlook emails are allowed!");
+      return false;
+    }
+  
     // New Password Validation (only if filled)
     if (newPassword) {
       if (newPassword.length < 8) {
@@ -156,9 +167,10 @@ function ProfilePage() {
         return false;
       }
     }
-
+  
     return true;
   };
+  
 
   const handleSubmit = async () => {
     if (!validate()) return;
