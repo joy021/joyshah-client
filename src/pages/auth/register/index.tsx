@@ -39,7 +39,16 @@ function RegisterPage() {
             name="name"
             required
             label="Name"
-            rules={[{ required: true }]}
+            // rules={[{ required: true }]}
+            rules={[
+              { required: true, message: "Please enter your name!" },
+              { min: 3, message: "Name must be at least 3 characters long!" },
+              {
+                pattern: /^[A-Za-z\s]+$/,
+                message: "Name can only contain letters and spaces!",
+              },
+            ]}
+
           >
             <Input placeholder="Name" />
           </Form.Item>
@@ -48,7 +57,29 @@ function RegisterPage() {
             name="email"
             required
             label="Email"
-            rules={[{ required: true }]}
+            rules={[
+              { required: true, message: "Please enter your email!" },
+              { type: "email", message: "Enter a valid email address!" },
+              {
+                pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$/,
+                message: "Enter a valid email address format!",
+              },
+              {
+                validator: (_, value) => {
+                  if (value) {
+                    const allowedDomains = ["gmail.com", "yahoo.com", "outlook.com"];
+                    const domain = value.split("@")[1];
+                    if (!allowedDomains.includes(domain)) {
+                      return Promise.reject(
+                        new Error("Only Gmail, Yahoo, and Outlook emails are allowed!")
+                      );
+                    }
+                  }
+                  return Promise.resolve();
+                },
+              },
+            ]}
+
           >
             <Input placeholder="Email" />
           </Form.Item>
@@ -57,7 +88,16 @@ function RegisterPage() {
             name="password"
             required
             label="Password"
-            rules={[{ required: true }]}
+            rules={[
+              { required: true, message: "Please enter your password!" },
+              { min: 8, message: "Password must be at least 8 characters long!" },
+              {
+                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/,
+                message:
+                  "Password must have at least one uppercase letter, one lowercase letter, one number, and one special character!",
+              },
+            ]}
+
           >
             <Input.Password placeholder="Password" />
           </Form.Item>
