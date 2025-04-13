@@ -6,9 +6,9 @@ import { loginUser } from "../../../api-services/users-service";
 import cookies from "js-cookie";
 
 function LoginPage() {
-  const [loading , setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const onFinish = async (values: never) => {
+  const onFinish = async (values: { email: string; password: string }) => {
     try {
       setLoading(true);
       const response = await loginUser(values);
@@ -17,7 +17,7 @@ function LoginPage() {
       navigate("/");
     } catch (error: any) {
       message.error(error.response?.data.message || error.message);
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -54,9 +54,7 @@ function LoginPage() {
             <Input.Password placeholder="Password" />
           </Form.Item>
 
-          <Button type="primary" htmlType="submit" block
-          loading={loading}
-          >
+          <Button type="primary" htmlType="submit" block loading={loading}>
             Login
           </Button>
           <Link to="/register">Don't have an account? Register</Link>

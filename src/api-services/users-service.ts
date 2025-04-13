@@ -18,6 +18,7 @@ interface LoginUserRequest {
 
 interface LoginUserResponse {
   token: string;
+  message: string;
   user: {
     _id: string;
     name: string;
